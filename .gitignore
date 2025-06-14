@@ -1,0 +1,28 @@
+# Node.js modules
+node_modules/
+.env
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.npm/
+.yarn/
+
+# Build outputs
+dist/
+build/
+
+# OS generated files
+.DS_Store
+.idea/
+.vscode/ # You might want to keep this tracked if you collaborate and share settings
+Thumbs.db
+
+# Django specific
+__pycache__/
+*.sqlite3
+*.pyc
+.webapps/
+staticfiles/ # Or whatever your STATIC_ROOT is
+media/       # Or whatever your MEDIA_ROOT is
