@@ -6,8 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const message = input.value.trim();
         if (!message) return;
 
-        addMessage('You', message, 'user');
-
+        addMessage('You', message, 'text-right text-blue-700 bg-gray-50');
         input.value = '';
         input.focus();
 
@@ -19,62 +18,29 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const data = await response.json();
-            addMessage('DevAI', data.reply, 'bot');
-
+            addMessage('Bot', data.reply, 'text-left text-gray-900 bg-blue-100');
             chatBox.scrollTop = chatBox.scrollHeight;
+
         } catch (error) {
-            addMessage('Error', 'Could not connect to server.', 'error');
+            addMessage('Error', 'Error. Try again later.', 'text-center text-red-600');
         }
     };
 
-function addMessage(sender, text, type) {
-    const msg = document.createElement('div');
-    msg.classList.add('flex', 'w-full');
+    function addMessage(sender, text, style) {
+        const container = document.createElement('div');
 
-    if (type === 'user') {
-        msg.classList.add('justify-end');
+        // Align based on sender
+        container.className = sender === 'You' ? 'flex justify-end my-2' : 'flex justify-start my-2';
+
+        const msg = document.createElement('div');
+        msg.className = `inline-block max-w-fit p-2 rounded shadow break-words ${style}`;
+
+        // Markdown 
         const parsedMarkdown = marked.parse(text);
-        msg.innerHTML = `
-            <div class="flex items-end gap-2 justify-end">
-                <div class="bg-blue-600 text-white px-4 py-2 rounded-lg w-fit max-w-[80%] markdown-content">
-                    ${parsedMarkdown}
-                </div>
-                <div class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M5.121 17.804A4 4 0 018 16h8a4 4 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                </div>
-            </div>
-        `;
-    } else if (type === 'bot') {
-        msg.classList.add('justify-start');
-        const parsedMarkdown = marked.parse(text);
-        msg.innerHTML = `
-            <div class="flex items-end gap-2">
-                <div class="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M9 17v-2a4 4 0 014-4h3M7 10v1a2 2 0 002 2h1m7-7v1a2 2 0 002 2h1"/>
-                    </svg>
-                </div>
-                <div class="bg-gray-200 text-black px-4 py-2 rounded-lg w-fit max-w-[80%] markdown-content">
-                    ${parsedMarkdown}
-                </div>
-            </div>
-        `;
-    } else if (type === 'error') {
-        msg.classList.add('justify-center');
-        msg.innerHTML = `
-            <div class="bg-red-100 text-red-700 px-4 py-2 rounded-lg w-fit max-w-[80%] text-center">
-                ${text}
-            </div>
-        `;
+        msg.innerHTML = `<strong>${sender}:</strong><div class="prose">${parsedMarkdown}</div>`;
+
+        container.appendChild(msg);
+        chatBox.appendChild(container);
     }
-
-    chatBox.appendChild(msg);
-}
 
 });
