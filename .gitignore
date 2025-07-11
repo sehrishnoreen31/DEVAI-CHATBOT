@@ -25,5 +25,5 @@ __pycache__/
 *.sqlite3
 *.pyc
 .webapps/
-staticfiles/ # Or whatever your STATIC_ROOT is
-media/       # Or whatever your MEDIA_ROOT is
+staticfiles/ 
+media/       

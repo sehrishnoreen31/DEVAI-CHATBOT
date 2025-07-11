@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const message = input.value.trim();
         if (!message) return;
 
-        addMessage('You', message, 'text-right text-blue-700 bg-gray-50');
+        addMessage('You', message, 'rounded-full text-white bg-blue-500 bg-opacity-90 backdrop-blur-md max-w-[100px]');
         input.value = '';
         input.focus();
 
@@ -18,29 +18,26 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const data = await response.json();
-            addMessage('Bot', data.reply, 'text-left text-gray-900 bg-blue-100');
+            addMessage('Bot', data.reply, 'rounded-full text-black bg-white bg-opacity-90 max-w-[100px]');
             chatBox.scrollTop = chatBox.scrollHeight;
 
         } catch (error) {
-            addMessage('Error', 'Error. Try again later.', 'text-center text-red-600');
+            addMessage('Error', 'Error. Try again later.', 'text-red-700 bg-red-100/80 text-center');
         }
     };
 
     function addMessage(sender, text, style) {
         const container = document.createElement('div');
-
-        // Align based on sender
-        container.className = sender === 'You' ? 'flex justify-end my-2' : 'flex justify-start my-2';
+        container.className = sender === 'You' ? 'flex justify-end my-2 p-2' : 'flex justify-start my-2 p-2';
 
         const msg = document.createElement('div');
-        msg.className = `inline-block max-w-fit p-2 rounded shadow break-words ${style}`;
+        msg.className = `inline-block max-w-[75%] px-4 py-2 rounded shadow break-words ${style}`;
 
-        // Markdown 
+
         const parsedMarkdown = marked.parse(text);
-        msg.innerHTML = `<strong>${sender}:</strong><div class="prose">${parsedMarkdown}</div>`;
+        msg.innerHTML = `<strong class="block mb-1 text-sm">${sender}</strong><div class="prose prose-sm prose-invert">${parsedMarkdown}</div>`;
 
         container.appendChild(msg);
         chatBox.appendChild(container);
     }
-
 });
